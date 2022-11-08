@@ -8,5 +8,6 @@ namespace OrdersApp.Domain.Entities.OrdersAggregate
 {
     class Provider : BaseEntity
     {
+        public string Name { get; set; }
     }
 }
