@@ -23,7 +23,7 @@ namespace OrdersApp.DAL.Persistence.Migrations.ApplicationDb
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2(7)");
 
                     b.Property<string>("Number")
                         .HasColumnType("TEXT");

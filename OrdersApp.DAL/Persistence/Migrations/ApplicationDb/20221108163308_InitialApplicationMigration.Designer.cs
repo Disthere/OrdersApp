@@ -9,7 +9,7 @@ using OrdersApp.DAL.Persistence;
 namespace OrdersApp.DAL.Persistence.Migrations.ApplicationDb
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20221108151158_InitialApplicationMigration")]
+    [Migration("20221108163308_InitialApplicationMigration")]
     partial class InitialApplicationMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,7 +25,7 @@ namespace OrdersApp.DAL.Persistence.Migrations.ApplicationDb
                         .HasColumnType("INTEGER");
 
                     b.Property<DateTime>("Date")
-                        .HasColumnType("TEXT");
+                        .HasColumnType("datetime2(7)");
 
                     b.Property<string>("Number")
                         .HasColumnType("TEXT");

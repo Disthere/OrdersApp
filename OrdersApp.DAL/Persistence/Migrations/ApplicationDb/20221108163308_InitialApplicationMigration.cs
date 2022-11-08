@@ -30,7 +30,7 @@ namespace OrdersApp.DAL.Persistence.Migrations.ApplicationDb
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
                     Number = table.Column<string>(type: "TEXT", nullable: true),
-                    Date = table.Column<DateTime>(type: "TEXT", nullable: false),
+                    Date = table.Column<DateTime>(type: "datetime2(7)", nullable: false),
                     ProviderId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
