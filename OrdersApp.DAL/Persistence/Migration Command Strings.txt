@@ -1,0 +1,5 @@
+﻿Add-Migration InitialApplicationMigration -Context ApplicationDbContext -OutputDir Persistence/Migrations/ApplicationDb
+
+Update-Database -Context ApplicationDbContext
+
+Drop-Database -Context ApplicationDbContext

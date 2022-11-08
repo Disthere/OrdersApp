@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OrdersApp.Domain.Entities.OrdersAggregate
+namespace OrdersApp.DAL.Persistence
 {
-    public class Provider : BaseEntity
+    public interface IApplicationDbContext
     {
-        public string Name { get; set; }
     }
 }
