@@ -5,6 +5,14 @@ VisualStudioVersion = 17.3.32901.215
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrdersApp.Web", "OrdersApp.Web\OrdersApp.Web.csproj", "{107E659E-D527-4B54-8405-C616B5DC4B40}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OrdersApp.DAL", "OrdersApp.DAL", "{6AF9E59B-0310-4F71-B546-9B2081689ADA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "OrdersApp.Domain", "OrdersApp.Domain", "{B19A02FC-D93B-4B99-BC2C-CAEAEBC62BB0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrdersApp.DAL", "OrdersApp.DAL\OrdersApp.DAL.csproj", "{5ABE83D7-EECC-4095-B14B-3E326A121F04}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OrdersApp.Domain", "OrdersApp.Domain\OrdersApp.Domain.csproj", "{4894C363-1D19-4CE4-9BD0-F89DE5713D93}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,9 +23,21 @@ Global
 		{107E659E-D527-4B54-8405-C616B5DC4B40}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{107E659E-D527-4B54-8405-C616B5DC4B40}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{107E659E-D527-4B54-8405-C616B5DC4B40}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5ABE83D7-EECC-4095-B14B-3E326A121F04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5ABE83D7-EECC-4095-B14B-3E326A121F04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5ABE83D7-EECC-4095-B14B-3E326A121F04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5ABE83D7-EECC-4095-B14B-3E326A121F04}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4894C363-1D19-4CE4-9BD0-F89DE5713D93}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4894C363-1D19-4CE4-9BD0-F89DE5713D93}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4894C363-1D19-4CE4-9BD0-F89DE5713D93}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4894C363-1D19-4CE4-9BD0-F89DE5713D93}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{5ABE83D7-EECC-4095-B14B-3E326A121F04} = {6AF9E59B-0310-4F71-B546-9B2081689ADA}
+		{4894C363-1D19-4CE4-9BD0-F89DE5713D93} = {B19A02FC-D93B-4B99-BC2C-CAEAEBC62BB0}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D9D68215-717D-4891-B0AC-D24517D37EE6}
