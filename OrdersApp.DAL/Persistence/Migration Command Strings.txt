@@ -3,3 +3,5 @@
 Update-Database -Context ApplicationDbContext
 
 Drop-Database -Context ApplicationDbContext
+
+Remove-Migration
