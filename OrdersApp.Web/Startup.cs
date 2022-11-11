@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using OrdersApp.DAL.Persistence;
+using OrdersApp.DAL;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,8 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OrdersApp.DAL.Persistence;
 
-namespace OrdersApp.DAL.Persistence
+namespace OrdersApp.DAL
 {
     public static class DependencyInjection
     {
