@@ -24,6 +24,11 @@ namespace OrdersApp.Web
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddSqliteDbConnection(Configuration);
+
+            services.AddMediatR();
+
+            services.AddAutoMapper();
+
             services.AddControllersWithViews();
         }
 
