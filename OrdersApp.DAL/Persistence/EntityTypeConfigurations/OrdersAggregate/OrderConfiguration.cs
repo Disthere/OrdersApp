@@ -26,10 +26,11 @@ namespace OrdersApp.DAL.Persistence.EntityTypeConfigurations.OrdersAggregate
 
             builder.HasOne(provider => provider.Provider)
                 .WithMany(order => order.Orders)
-                .HasForeignKey(provider => provider.Id)
-                .HasPrincipalKey(t => t.Id);
+                .HasForeignKey(provider => provider.ProviderId)
+                .HasPrincipalKey(provider => provider.Id);
 
-            builder.HasKey(order => new { order.ProviderId, order.Number });
+            //Включить при работе с SQL Server
+            //builder.HasKey(order => new { order.ProviderId, order.Number });
         }
     }
 }

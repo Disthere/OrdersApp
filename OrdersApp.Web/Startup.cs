@@ -23,11 +23,19 @@ namespace OrdersApp.Web
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddRouting(config =>
+            {
+                config.LowercaseQueryStrings = true;
+                config.LowercaseUrls = true;
+            });
+
             services.AddSqliteDbConnection(Configuration);
 
             services.AddMediatR();
 
             services.AddAutoMapper();
+
+            services.AddAntiforgery();
 
             services.AddControllersWithViews();
         }
@@ -44,12 +52,13 @@ namespace OrdersApp.Web
 
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
             app.UseRouting();
 
-            app.UseAuthorization();
+            //app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

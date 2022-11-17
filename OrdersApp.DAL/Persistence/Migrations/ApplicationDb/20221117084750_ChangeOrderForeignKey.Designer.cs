@@ -2,15 +2,17 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OrdersApp.DAL.Persistence;
 
 namespace OrdersApp.DAL.Persistence.Migrations.ApplicationDb
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20221117084750_ChangeOrderForeignKey")]
+    partial class ChangeOrderForeignKey
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -18,22 +20,20 @@ namespace OrdersApp.DAL.Persistence.Migrations.ApplicationDb
 
             modelBuilder.Entity("OrdersApp.Domain.Entities.OrdersAggregate.Order", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<int>("ProviderId")
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Number")
+                        .HasMaxLength(4000)
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTime>("Date")
                         .HasColumnType("datetime2(7)");
 
-                    b.Property<string>("Number")
-                        .IsRequired()
-                        .HasMaxLength(4000)
-                        .HasColumnType("TEXT");
-
-                    b.Property<int>("ProviderId")
+                    b.Property<int>("Id")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("Id");
+                    b.HasKey("ProviderId", "Number");
 
                     b.HasIndex("Id")
                         .IsUnique();
@@ -100,7 +100,7 @@ namespace OrdersApp.DAL.Persistence.Migrations.ApplicationDb
                 {
                     b.HasOne("OrdersApp.Domain.Entities.OrdersAggregate.Provider", "Provider")
                         .WithMany("Orders")
-                        .HasForeignKey("ProviderId")
+                        .HasForeignKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -112,6 +112,7 @@ namespace OrdersApp.DAL.Persistence.Migrations.ApplicationDb
                     b.HasOne("OrdersApp.Domain.Entities.OrdersAggregate.Order", "Order")
                         .WithMany("OrderItems")
                         .HasForeignKey("OrderId")
+                        .HasPrincipalKey("Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

@@ -1,0 +1,17 @@
+﻿
+@{
+    ViewData["Title"] = "GetAll";
+}
+
+<h1>Orders</h1>
+
+<select class="form-select" size="5" multiple aria-label="multiple select example">
+    <option selected>Все поставщики</option>
+
+    @foreach (var provider in ViewBag.Providers)
+    {
+       <option value="1">@provider.Name</option>
+        
+    }
+        
+</select>

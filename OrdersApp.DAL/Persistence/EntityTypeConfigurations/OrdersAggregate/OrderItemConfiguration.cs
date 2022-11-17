@@ -27,8 +27,8 @@ namespace OrdersApp.DAL.Persistence.EntityTypeConfigurations.OrdersAggregate
 
             builder.HasOne(order => order.Order)
                 .WithMany(orderItem => orderItem.OrderItems)
-                .HasForeignKey(order => order.OrderId)
-                .HasPrincipalKey(t => t.Id);
+                .HasForeignKey(orderItem => orderItem.OrderId)
+                .HasPrincipalKey(order => order.Id);
         }
     }
 }

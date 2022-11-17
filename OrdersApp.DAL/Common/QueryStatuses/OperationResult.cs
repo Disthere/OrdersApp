@@ -6,12 +6,9 @@ using System.Threading.Tasks;
 
 namespace OrdersApp.DAL.Common.QueryStatuses
 {
-    public class NotFoundStatus : Exception
+    public class OperationResult
     {
-        public NotFoundStatus(string name, object key)
-            : base($"Entity \"{name}\" ({key}) not found.")
-        {
-
-        }
+        public bool Found { get; set; }
+        public DateTime OperationDate { get; set; } = DateTime.Now;
     }
 }
