@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using OrdersApp.DAL.Common.Exceptions;
+using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Commands.CreateOrder;
 using OrdersApp.DAL.Persistence;
 using OrdersApp.Domain.Entities.OrdersAggregate;
 using System.Threading;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Commands.DeleteOrder
 {
-    public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand>
+    public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand, DeleteOrderVm>
     {
         private readonly IApplicationDbContext _applicationDbContext;
 
@@ -15,18 +16,33 @@ namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Commands.DeleteOrde
             _applicationDbContext = applicationDbContext;
 
 
-        public async Task<Unit> Handle(DeleteOrderCommand request, CancellationToken cancellationToken)
+        public async Task<DeleteOrderVm> Handle(DeleteOrderCommand request, CancellationToken cancellationToken)
         {
-            var entity = await _applicationDbContext.Orders
-                .FindAsync(new object[] { request.Id }, cancellationToken);
+            var response = new DeleteOrderVm();
 
-            if (entity == null)
-                throw new NotFoundException(nameof(Order), request.Id);
+            var entity = new Order();
 
-            _applicationDbContext.Orders.Remove(entity);
-            await _applicationDbContext.SaveChangesAsync(cancellationToken);
+            try
+            {
+                entity = await _applicationDbContext.Orders
+                   .FindAsync(new object[] { request.Id }, cancellationToken);
+            }
+            catch { }
 
-            return Unit.Value;
+            if (entity != null)
+            {
+                response.IsFound = true;
+
+                try
+                {
+                    _applicationDbContext.Orders.Remove(entity);
+                    await _applicationDbContext.SaveChangesAsync(cancellationToken);
+                    response.IsSuccess = true;
+                }
+                catch { response.IsError = true; }
+            }
+
+            return response;
         }
     }
 }

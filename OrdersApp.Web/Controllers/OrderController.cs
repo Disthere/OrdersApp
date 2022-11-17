@@ -45,19 +45,16 @@ namespace OrdersApp.Web.Controllers
 
             var providers = await Mediator.Send(new GetProviderListQuery());
 
-            if (providers.Ok)
-            {
+            var vm = new CreateOrderViewModel();
 
+            if (providers.IsFound)
+            {
+                vm.Providers = providers.Providers;
+
+                return View(vm);
             }
-            CreateOrderViewModel vm = new CreateOrderViewModel
-            {
-                Providers = providers.Providers
-            };
 
-
-            //ViewBag.Providers = vm.Providers;
-
-            return View(vm);
+            return View();
         }
 
         [HttpPost]
@@ -67,31 +64,26 @@ namespace OrdersApp.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                var operationResult = await _mediator.Send(new FactAddRequest(model));
-                if (operationResult.Ok)
+                var createOrderComand = new CreateOrderCommand()
                 {
-                    return RedirectToAction("Index", "Facts");
+                    Number = createOrderVm.CreateOrderDto.Number,
+                    Date = createOrderVm.CreateOrderDto.Date,
+                    ProviderId = createOrderVm.CreateOrderDto.ProviderId
+                };
+
+                //var command = _mapper.Map<CreateOrderCommand>(createOrderVm.CreateOrderDto);
+                //command.Name = ;
+                var operationResult = await Mediator.Send(createOrderComand);
+
+                if (operationResult.IsSuccess)
+                {
+                    return RedirectToAction("GetAll", "Order");
                 }
-                ModelState.AddModelError("", operationResult.Exception.GetBaseException().Message);
+
+                ModelState.AddModelError("", operationResult.IsSuccess.ToString());
             }
 
-            return View(model);
-
-
-
-
-            var createOrderComand = new CreateOrderCommand()
-            {
-                Number = createOrderVm.CreateOrderDto.Number,
-                Date = createOrderVm.CreateOrderDto.Date,
-                ProviderId = createOrderVm.CreateOrderDto.ProviderId
-            };
-
-            //var command = _mapper.Map<CreateOrderCommand>(createOrderVm.CreateOrderDto);
-            //command.Name = ;
-            await Mediator.Send(createOrderComand);
-
-            return RedirectToAction("GetAll", "Order");
+            return View(createOrderVm);
 
         }
 

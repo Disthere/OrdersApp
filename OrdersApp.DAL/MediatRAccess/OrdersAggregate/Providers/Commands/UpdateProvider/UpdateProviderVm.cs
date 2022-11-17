@@ -1,10 +1,9 @@
-﻿using MediatR;
+﻿using OrdersApp.DAL.Common.QueryStatuses;
 
 namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.Providers.Commands.UpdateProvider
 {
-    public class UpdateProviderCommand : IRequest<UpdateProviderVm>
+    public class UpdateProviderVm : OperationResult
     {
         public int Id { get; set; }
-        public string Name { get; set; }
     }
 }

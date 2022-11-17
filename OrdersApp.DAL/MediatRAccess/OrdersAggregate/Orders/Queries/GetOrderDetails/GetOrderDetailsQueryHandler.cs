@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using OrdersApp.DAL.Common.Exceptions;
+using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Commands.CreateOrder;
 using OrdersApp.DAL.Persistence;
 using OrdersApp.Domain.Entities.OrdersAggregate;
 using System.Threading;
@@ -21,14 +22,25 @@ namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Queries.GetOrderDet
 
         public async Task<OrderDetailsVm> Handle(GetOrderDetailsQuery request, CancellationToken cancellationToken)
         {
-            var entity = await _applicationDbContext.Orders
-                .FirstOrDefaultAsync(order =>
-                order.Id == request.Id, cancellationToken);
+            var entity = new Order();
 
-            if (entity == null)
-                throw new NotFoundException(nameof(Order), request.Id);
+            try
+            {
+                entity = await _applicationDbContext.Orders
+                                .FirstOrDefaultAsync(order =>
+                                order.Id == request.Id, cancellationToken);
+            }
+            catch { }
 
-            return _mapper.Map<OrderDetailsVm>(entity);
+            var response = new OrderDetailsVm();
+
+            if (entity != null)
+            {
+                response = _mapper.Map<OrderDetailsVm>(entity); 
+                response.IsFound = true;
+            }
+           
+            return response;
         }
     }
 }

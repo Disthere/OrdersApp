@@ -23,7 +23,7 @@
         <select class="form-control" multiple asp-items="@(new SelectList(Model.Providers, "Id", "Name"))"
                 asp-for="@Model.CreateOrderDto.ProviderId" id="inputProvider" aria-describedby="ProviderHelp">
         </select>
-        <span asp-validation-for="@Model.CreateOrderDto.ProviderId"></span>
+        <span asp-validation-for="@Model.Providers"></span>
         <div id="ProviderHelp" class="form-text">Выберите поставщика</div>
     </div>
     <br />

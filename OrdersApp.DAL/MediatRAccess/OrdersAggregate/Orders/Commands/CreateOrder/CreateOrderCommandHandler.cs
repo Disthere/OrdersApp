@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Commands.CreateOrder
 {
-    public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, int>
+    public class CreateOrderCommandHandler : IRequestHandler<CreateOrderCommand, CreateOrderVm>
     {
         private readonly IApplicationDbContext _applicationDbContext;
 
@@ -14,7 +14,7 @@ namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Commands.CreateOrde
             _applicationDbContext = applicationDbContext;
 
 
-        public async Task<int> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
+        public async Task<CreateOrderVm> Handle(CreateOrderCommand request, CancellationToken cancellationToken)
         {
             var order = new Order()
             {
@@ -23,10 +23,19 @@ namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Commands.CreateOrde
                 ProviderId = request.ProviderId
             };
 
-            await _applicationDbContext.Orders.AddAsync(order, cancellationToken);
-            await _applicationDbContext.SaveChangesAsync(cancellationToken);
+            var response = new CreateOrderVm();
 
-            return order.Id;
+            try
+            {
+                await _applicationDbContext.Orders.AddAsync(order, cancellationToken);
+                await _applicationDbContext.SaveChangesAsync(cancellationToken);
+
+                response.Id = order.Id;
+                response.IsSuccess = true;
+            }
+            catch { }
+            
+            return  response;
         }
     }
 }

@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Queries.GetOrderList;
 using OrdersApp.DAL.Persistence;
 using System.Linq;
 using System.Threading;
@@ -21,7 +22,11 @@ namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Queries.GetOrdersLi
 
         public async Task<OrdersListByUserConfigVm> Handle(GetOrdersListByUserConfigQuery request, CancellationToken cancellationToken)
         {
-            var ordersListQuery = await _applicationDbContext.Orders
+            var response = new OrdersListByUserConfigVm();
+
+            try
+            {
+                response.Orders = await _applicationDbContext.Orders
                 .Where(order =>
                 (string.IsNullOrEmpty(request.Number) || order.Number == request.Number)
                 && (string.IsNullOrEmpty(request.ProviderId.ToString()) || order.ProviderId == request.ProviderId)
@@ -29,8 +34,13 @@ namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Queries.GetOrdersLi
                 && (string.IsNullOrEmpty(request.DateTo.ToString()) || order.Date <= request.DateTo))
                  .ProjectTo<OrdersListByUserConfigLookupDto>(_mapper.ConfigurationProvider)
                  .ToListAsync(cancellationToken);
+            }
+            catch { }
 
-            return new OrdersListByUserConfigVm { Orders = ordersListQuery };
+            if (response.Orders != null)
+                response.IsFound = true;
+
+            return response;
         }
     }
 }

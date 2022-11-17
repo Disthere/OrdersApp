@@ -1,11 +1,12 @@
 ﻿using AutoMapper;
 using OrdersApp.DAL.Common.Mappings;
+using OrdersApp.DAL.Common.QueryStatuses;
 using OrdersApp.Domain.Entities.OrdersAggregate;
 using System;
 
 namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Queries.GetOrderDetails
 {
-    public class OrderDetailsVm : IMapWith<Order>
+    public class OrderDetailsVm : OperationResult, IMapWith<Order>
     {
         public int Id { get; set; }
         public string Number { get; set; }

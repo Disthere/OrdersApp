@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.Providers.Commands.CreateProvider
 {
-    public class CreateProviderCommandHandler : IRequestHandler<CreateProviderCommand, int>
+    public class CreateProviderCommandHandler : IRequestHandler<CreateProviderCommand, CreateProviderVm>
     {
         private readonly IApplicationDbContext _applicationDbContext;
 
@@ -14,17 +14,25 @@ namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.Providers.Commands.CreateP
             _applicationDbContext = applicationDbContext;
 
 
-        public async Task<int> Handle(CreateProviderCommand request, CancellationToken cancellationToken)
+        public async Task<CreateProviderVm> Handle(CreateProviderCommand request, CancellationToken cancellationToken)
         {
             var provider = new Provider()
             {
                 Name = request.Name
             };
 
-            await _applicationDbContext.Providers.AddAsync(provider, cancellationToken);
-            await _applicationDbContext.SaveChangesAsync(cancellationToken);
+            var response = new CreateProviderVm();
 
-            return provider.Id;
+            try
+            {
+                await _applicationDbContext.Providers.AddAsync(provider, cancellationToken);
+                await _applicationDbContext.SaveChangesAsync(cancellationToken);
+                response.Id = provider.Id;
+                response.IsSuccess = true;
+            }
+            catch { }
+
+            return response;
         }
     }
 }

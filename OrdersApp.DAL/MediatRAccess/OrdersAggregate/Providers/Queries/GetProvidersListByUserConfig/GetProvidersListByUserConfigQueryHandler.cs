@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Queries.GetOrdersListByUserConfig;
 using OrdersApp.DAL.Persistence;
 using System.Linq;
 using System.Threading;
@@ -21,13 +22,22 @@ namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.Providers.Queries.GetProvi
 
         public async Task<ProvidersListByUserConfigVm> Handle(GetProvidersListByUserConfigQuery request, CancellationToken cancellationToken)
         {
-            var providersListQuery = await _applicationDbContext.Providers
+            var response = new ProvidersListByUserConfigVm();
+
+            try
+            {
+                response.Providers = await _applicationDbContext.Providers
                 .Where(provider =>
                    (string.IsNullOrEmpty(request.Name) || provider.Name == request.Name))
                  .ProjectTo<ProvidersListByUserConfigLookupDto>(_mapper.ConfigurationProvider)
                  .ToListAsync(cancellationToken);
+            }
+            catch { }
 
-            return new ProvidersListByUserConfigVm { Providers = providersListQuery };
+            if (response.Providers != null)
+                response.IsFound = true;
+
+            return response;
         }
     }
 }
