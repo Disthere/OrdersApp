@@ -1,68 +1,67 @@
-﻿
+﻿@model OrdersApp.Web.Models.Orders.CreateOrderDto
+
 @{
     ViewData["Title"] = "GetAll";
 }
 
 <h1>Orders</h1>
 
-<select class="form-select" size="5" multiple aria-label="multiple select example">
-    <option selected>Все поставщики</option>
-
-    @foreach (var provider in ViewBag.Providers)
-    {
-       <option value="1">@provider.Name</option>
-        
-    }
-        
-</select>
-
-<form>
-    <div class="form-group row">
-        <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
-        <div class="col-sm-10">
-            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="email@example.com">
-        </div>
-    </div>
-    <div class="form-group row">
-        <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
-        <div class="col-sm-10">
-            <input type="password" class="form-control" id="inputPassword" placeholder="Password">
-        </div>
-    </div>
-</form>
-
 <div class="text-center">
-    <h1 class="display-5">Все заказы</h1>
+    <h1 class="display-5">Заказы</h1>
 
-    <select class="form-select" size="5" multiple aria-label="multiple select example">
-        <option selected>Поставщик</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-    </select>
-
-    <select class="form-select" size="5" multiple aria-label="multiple select example">
-        <option selected>Номер заказа</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-    </select>
-
-    <label>From</label>
-    <input type="date" />
+    <br />
 
 
-    <label>To</label>
-    <input type="date" />
+    <form asp-controller="Order" asp-action="Create" Method="post" asp-antiforgery="true">
+        <div class="row">
+            <div class="col-3">
+                <label asp-for="@Model.ProviderId" class="form-label"></label>
+                <select class="form-control" multiple asp-items="@(new SelectList(ViewBag.Providers, "Id", "Name"))"
+                        asp-for="@Model.ProviderId" id="inputProvider" aria-describedby="ProviderHelp">
+                </select>
+                <span asp-validation-for="@Model.ProviderId"></span>
+                <div id="ProviderHelp" class="form-text">Выберите поставщика</div>
+            </div>
 
+            <div class="col-3">
+                <label asp-for="@Model.ProviderId" class="form-label"></label>
+                <select class="form-control" multiple asp-items="@(new SelectList(ViewBag.Providers, "Id", "Name"))"
+                        asp-for="@Model.ProviderId" id="inputProvider" aria-describedby="ProviderHelp">
+                </select>
+                <span asp-validation-for="@Model.ProviderId"></span>
+                <div id="ProviderHelp" class="form-text">Выберите</div>
+            </div>
 
+            <div class="col-2">
+                <label asp-for="@Model.Date" class="form-label"></label>
+                <input asp-for="@Model.Date" type="date" class="form-control" id="inputDate" aria-describedby="DateHelp" />
+                <span asp-validation-for="@Model.Date"></span>
+                <div id="DateHelp" class="form-text">Выберите </div>
+            </div>
+
+            <div class="col-2">
+                <label asp-for="@Model.Date" class="form-label"></label>
+                <input asp-for="@Model.Date" type="date" class="form-control" id="inputDate" aria-describedby="DateHelp" />
+                <span asp-validation-for="@Model.Date"></span>
+                <div id="DateHelp" class="form-text">Выберите </div>
+            </div>
+
+            <div class="col-2">
+                <button type="submit" class="btn btn-primary">Найти</button>
+            </div>
+        </div>
+    </form>
+    <br />
+    <br />
+
+    <div class="row">
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th scope="col">#</th>
-                <th scope="col">Имя</th>
-                <th scope="col">Фамилия</th>
-                <th scope="col">Username</th>
+                <th scope="col">Наименование</th>
+                <th scope="col">Дата создания</th>
+                <th scope="col">Поставщик</th>
             </tr>
         </thead>
         <tbody>
@@ -86,4 +85,60 @@
             </tr>
         </tbody>
     </table>
+        <br />
+        <br />
+    </div>
+</div>
+
+<select class="form-select" size="5" multiple aria-label="multiple select example">
+    <option selected>Все поставщики</option>
+
+    @foreach (var provider in ViewBag.Providers)
+    {
+        <option value="1">@provider.Name</option>
+
+    }
+
+</select>
+
+<form>
+    <div class="form-group row">
+        <label for="staticEmail" class="col-sm-2 col-form-label">Email</label>
+        <div class="col-sm-10">
+            <input type="text" readonly class="form-control-plaintext" id="staticEmail" value="email@example.com">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+        <div class="col-sm-10">
+            <input type="password" class="form-control" id="inputPassword" placeholder="Password">
+        </div>
+    </div>
+</form>
+
+
+
+<select class="form-select" size="5" multiple aria-label="multiple select example">
+    <option selected>Поставщик</option>
+    <option value="1">One</option>
+    <option value="2">Two</option>
+    <option value="3">Three</option>
+</select>
+
+<select class="form-select" size="5" multiple aria-label="multiple select example">
+    <option selected>Номер заказа</option>
+    <option value="1">One</option>
+    <option value="2">Two</option>
+    <option value="3">Three</option>
+</select>
+
+<label>From</label>
+<input type="date" />
+
+
+<label>To</label>
+<input type="date" />
+
+
+
 </div>

@@ -31,7 +31,7 @@ namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.Providers.Queries.GetProvi
             }
             catch { }
 
-            if (response.Providers != null)
+            if (response.Providers.Count != 0)
                 response.IsFound = true;
 
             return response;

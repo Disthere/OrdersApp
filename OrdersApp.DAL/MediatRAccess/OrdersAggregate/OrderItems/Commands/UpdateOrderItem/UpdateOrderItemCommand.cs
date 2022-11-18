@@ -2,7 +2,7 @@
 
 namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.OrderItems.Commands.UpdateOrderItem
 {
-    public class UpdateOrderItemCommand : IRequest
+    public class UpdateOrderItemCommand : IRequest<UpdateOrderItemVm>
     {
         public int Id { get; set; }
         public string Name { get; set; }

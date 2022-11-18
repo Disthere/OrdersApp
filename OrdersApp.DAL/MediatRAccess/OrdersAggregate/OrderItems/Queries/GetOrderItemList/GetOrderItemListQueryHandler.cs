@@ -2,6 +2,7 @@
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
+using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Queries.GetOrderList;
 using OrdersApp.DAL.Persistence;
 using System.Threading;
 using System.Threading.Tasks;
@@ -20,11 +21,20 @@ namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.OrderItems.Queries.GetOrde
 
         public async Task<OrderItemListVm> Handle(GetOrderItemListQuery request, CancellationToken cancellationToken)
         {
-            var orderItemsQuery = await _applicationDbContext.OrderItems
+            var response = new OrderItemListVm();
+
+            try
+            {
+                response.OrderItems = await _applicationDbContext.OrderItems
                  .ProjectTo<OrderItemLookupDto>(_mapper.ConfigurationProvider)
                  .ToListAsync(cancellationToken);
+            }
+            catch { }
 
-            return new OrderItemListVm { OrderItems = orderItemsQuery };
+            if (response.OrderItems.Count != 0)
+                response.IsFound = true;
+
+            return response;
         }
     }
 }

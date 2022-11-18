@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Commands.CreateOrder;
 using OrdersApp.DAL.Persistence;
 using OrdersApp.Domain.Entities.OrdersAggregate;
 using System.Threading;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.OrderItems.Commands.CreateOrderItem
 {
-    public class CreateOrderItemCommandHandler : IRequestHandler<CreateOrderItemCommand, int>
+    public class CreateOrderItemCommandHandler : IRequestHandler<CreateOrderItemCommand, CreateOrderItemVm>
     {
         private readonly IApplicationDbContext _applicationDbContext;
 
@@ -14,7 +15,7 @@ namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.OrderItems.Commands.Create
             _applicationDbContext = applicationDbContext;
 
 
-        public async Task<int> Handle(CreateOrderItemCommand request, CancellationToken cancellationToken)
+        public async Task<CreateOrderItemVm> Handle(CreateOrderItemCommand request, CancellationToken cancellationToken)
         {
             var orderItem = new OrderItem()
             {
@@ -23,10 +24,19 @@ namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.OrderItems.Commands.Create
                 Unit = request.Unit
             };
 
-            await _applicationDbContext.OrderItems.AddAsync(orderItem, cancellationToken);
-            await _applicationDbContext.SaveChangesAsync(cancellationToken);
+            var response = new CreateOrderItemVm();
 
-            return orderItem.Id;
+            try
+            {
+                await _applicationDbContext.OrderItems.AddAsync(orderItem, cancellationToken);
+                await _applicationDbContext.SaveChangesAsync(cancellationToken);
+
+                response.Id = orderItem.Id;
+                response.IsSuccess = true;
+            }
+            catch { }
+
+            return response;
         }
     }
-}
+    }
