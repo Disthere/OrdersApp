@@ -37,7 +37,7 @@ namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Queries.GetOrdersLi
             }
             catch { }
 
-            if (response.Orders != null)
+            if (response.Orders.Count != 0)
                 response.IsFound = true;
 
             return response;

@@ -32,6 +32,10 @@ label {
     color: darkblue !important;
 }
 
+span {
+    color: red !important;
+}
+
 .btn-primary {
     color: #fff;
     background-color: #1b6ec2;

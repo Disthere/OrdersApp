@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OrdersApp.DAL;
+using OrdersApp.Web.Infrastructure.AccessToServicesFromOutside;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,10 @@ namespace OrdersApp.Web
                 config.LowercaseUrls = true;
             });
 
+            services.AddHttpContextAccessor();
+
+            services.AddSingleton<IServiceProviderProxy, HttpContextServiceProviderProxy>();
+
             services.AddSqliteDbConnection(Configuration);
 
             services.AddMediatR();
@@ -40,7 +45,7 @@ namespace OrdersApp.Web
             services.AddControllersWithViews();
         }
 
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IServiceProvider serviceProvider)
         {
             if (env.IsDevelopment())
             {
@@ -52,6 +57,8 @@ namespace OrdersApp.Web
 
                 app.UseHsts();
             }
+
+            ServiceLocator.Initialize(serviceProvider.GetService<IServiceProviderProxy>());
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

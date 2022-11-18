@@ -2,14 +2,12 @@
 using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.DependencyInjection;
 using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Commands.CreateOrder;
 using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Queries.GetOrderList;
-using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Providers.Commands.CreateProvider;
 using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Providers.Queries.GetProviderList;
 using OrdersApp.Web.Models.Orders;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace OrdersApp.Web.Controllers
@@ -25,33 +23,46 @@ namespace OrdersApp.Web.Controllers
             _mapper = mapper;
 
 
-        [HttpGet(Name = "MediatRGetAllOrders")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
+        //[HttpGet(Name = "MediatRGetAllOrders")]
+        [HttpGet]
+        //[ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> GetAll()
         {
-            var providersListQuery = new GetProviderListQuery();
+            var providersListQuery = await Mediator.Send(new GetProviderListQuery());
 
-            var vm = await Mediator.Send(providersListQuery);
+            if (providersListQuery.IsFound)
+            {
+                ViewBag.Providers = providersListQuery.Providers;
+            }
 
-            ViewBag.Providers = vm.Providers;
+            var orderListQuery = await Mediator.Send(new GetOrderListQuery());
+
+            var numbers = orderListQuery.Orders
+                .GroupBy(o => o.Number)
+                .Select(x => x.FirstOrDefault())
+                .Select(std => new { std.Id, std.Number })
+                .ToList();
+
+            ViewBag.Orders = orderListQuery.Orders;
+
+            if (orderListQuery.IsFound)
+            {
+                ViewBag.OrderNumbers = numbers;
+            }
 
             return View();
+
         }
 
 
         public async Task<IActionResult> Create()
         {
-            //var providersListQuery = new GetProviderListQuery();
 
-            var providers = await Mediator.Send(new GetProviderListQuery());
+            var providersListQuery = await Mediator.Send(new GetProviderListQuery());
 
-            var vm = new CreateOrderViewModel();
-
-            if (providers.IsFound)
+            if (providersListQuery.IsFound)
             {
-                vm.Providers = providers.Providers;
-
-                return View(vm);
+                ViewBag.Providers = providersListQuery.Providers;
             }
 
             return View();
@@ -59,16 +70,33 @@ namespace OrdersApp.Web.Controllers
 
         [HttpPost]
         //[ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<IActionResult> Create(CreateOrderViewModel createOrderVm)
+        public async Task<IActionResult> Create(CreateOrderDto createOrderVm)
         {
+            if (!ModelState.IsValid)
+            {
+                var providers = await Mediator.Send(new GetProviderListQuery());
+
+                ViewBag.Providers = providers.Providers;
+
+                //var providers = await Mediator.Send(new GetProviderListQuery());
+
+                //var vm = new CreateOrderViewModel();
+
+                //if (providers.IsFound)
+                //{
+                //    createOrderVm.Providers = providers.Providers;
+                //}
+
+                //return View(createOrderVm);
+            }
 
             if (ModelState.IsValid)
             {
                 var createOrderComand = new CreateOrderCommand()
                 {
-                    Number = createOrderVm.CreateOrderDto.Number,
-                    Date = createOrderVm.CreateOrderDto.Date,
-                    ProviderId = createOrderVm.CreateOrderDto.ProviderId
+                    Number = createOrderVm.Number,
+                    Date = createOrderVm.Date,
+                    ProviderId = createOrderVm.ProviderId
                 };
 
                 //var command = _mapper.Map<CreateOrderCommand>(createOrderVm.CreateOrderDto);
@@ -79,8 +107,6 @@ namespace OrdersApp.Web.Controllers
                 {
                     return RedirectToAction("GetAll", "Order");
                 }
-
-                ModelState.AddModelError("", operationResult.IsSuccess.ToString());
             }
 
             return View(createOrderVm);
