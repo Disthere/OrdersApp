@@ -32,6 +32,7 @@ namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Queries.GetOrdersLi
                 && (string.IsNullOrEmpty(request.ProviderId.ToString()) || order.ProviderId == request.ProviderId)
                 && (string.IsNullOrEmpty(request.DateFrom.ToString()) || order.Date >= request.DateFrom)
                 && (string.IsNullOrEmpty(request.DateTo.ToString()) || order.Date <= request.DateTo))
+                 .Include(provider => provider.Provider)
                  .ProjectTo<OrdersListByUserConfigLookupDto>(_mapper.ConfigurationProvider)
                  .ToListAsync(cancellationToken);
             }

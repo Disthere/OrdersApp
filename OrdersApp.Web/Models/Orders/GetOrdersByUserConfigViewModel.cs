@@ -5,15 +5,16 @@ using System;
 
 namespace OrdersApp.Web.Models.Orders
 {
-    public class GetOrdersListByUserConfigDto : IMapWith<GetOrdersListByUserConfigQuery>
+    public class GetOrdersByUserConfigViewModel : IMapWith<GetOrdersListByUserConfigQuery>
     {
         public string Number { get; set; }
-        public DateTime Date { get; set; }
-        public int ProviderId { get; set; }
+        public DateTime? DateFrom { get; set; }
+        public DateTime? DateTo { get; set; }
+        public int? ProviderId { get; set; }
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<GetOrdersListByUserConfigDto, GetOrdersListByUserConfigQuery>();
+            profile.CreateMap<GetOrdersByUserConfigViewModel, GetOrdersListByUserConfigQuery>();
         }
     }
 }

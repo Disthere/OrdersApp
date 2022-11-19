@@ -11,6 +11,7 @@ namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Queries.GetOrderLis
         public string Number { get; set; }
         public DateTime Date { get; set; }
         public int ProviderId { get; set; }
+        public Provider Provider { get; set; }
 
         public void Mapping(Profile profile)
         {
@@ -22,7 +23,9 @@ namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Queries.GetOrderLis
                 .ForMember(orderDto => orderDto.Date,
                 opt => opt.MapFrom(order => order.Date))
                 .ForMember(orderDto => orderDto.ProviderId,
-                opt => opt.MapFrom(order => order.ProviderId));
+                opt => opt.MapFrom(order => order.ProviderId))
+                .ForMember(orderDto => orderDto.Provider,
+                opt => opt.MapFrom(order => order.Provider));
         }
     }
 }

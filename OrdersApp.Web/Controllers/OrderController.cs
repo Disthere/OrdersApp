@@ -5,8 +5,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
 using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Commands.CreateOrder;
 using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Queries.GetOrderList;
+using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Queries.GetOrdersListByUserConfig;
 using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Providers.Queries.GetProviderList;
 using OrdersApp.Web.Models.Orders;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -25,7 +28,6 @@ namespace OrdersApp.Web.Controllers
 
         //[HttpGet(Name = "MediatRGetAllOrders")]
         [HttpGet]
-        //[ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult> GetAll()
         {
             var providersListQuery = await Mediator.Send(new GetProviderListQuery());
@@ -35,25 +37,111 @@ namespace OrdersApp.Web.Controllers
                 ViewBag.Providers = providersListQuery.Providers;
             }
 
-            var orderListQuery = await Mediator.Send(new GetOrderListQuery());
-
-            var numbers = orderListQuery.Orders
-                .GroupBy(o => o.Number)
-                .Select(x => x.FirstOrDefault())
-                .Select(std => new { std.Id, std.Number })
-                .ToList();
-
-            ViewBag.Orders = orderListQuery.Orders;
-
-            if (orderListQuery.IsFound)
+            var orderListQuery = new GetOrdersListByUserConfigQuery()
             {
-                ViewBag.OrderNumbers = numbers;
+                DateFrom = DateTime.Now.AddMonths(-1),
+                DateTo = DateTime.Now
+            };
+
+            var orderList = await Mediator.Send(orderListQuery);
+
+            if (orderList.IsFound)
+            {
+                ViewBag.Orders = orderList.Orders;
+
+                var orderNumbers = orderList.Orders
+                    .GroupBy(o => o.Number)
+                    .Select(x => x.FirstOrDefault())
+                    .Select(s => s.Number)
+                    .ToList();
+
+                //var orderNumbers = orderList.Orders
+                //    .GroupBy(o => o.Number)
+                //    .Select(x => x.FirstOrDefault())
+                //    .Select(std => new { std.Id, std.Number })
+                //    .ToList();
+
+                ViewBag.OrderNumbers = orderNumbers;
             }
 
             return View();
-
         }
 
+
+        [HttpPost]
+        public async Task<ActionResult> GetAll(GetOrdersByUserConfigViewModel getOrdersByUserConfigViewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                var providersListQuery = await Mediator.Send(new GetProviderListQuery());
+
+                if (providersListQuery.IsFound)
+                {
+                    ViewBag.Providers = providersListQuery.Providers;
+                }
+
+                var orderListQuery = new GetOrdersListByUserConfigQuery()
+                {
+                    DateFrom = DateTime.Now.AddMonths(-1),
+                    DateTo = DateTime.Now
+                };
+
+                var orderList = await Mediator.Send(orderListQuery);
+
+                if (orderList.IsFound)
+                {
+                    ViewBag.Orders = orderList.Orders;
+
+                    var orderNumbers = orderList.Orders
+                        .GroupBy(o => o.Number)
+                        .Select(x => x.FirstOrDefault())
+                        .Select(s => s.Number)
+                        .ToList();
+
+                    ViewBag.OrderNumbers = orderNumbers;
+                }
+            }
+
+            if (ModelState.IsValid)
+            {
+                //var orderListQuery = _mapper.Map<GetOrdersListByUserConfigQuery>(getOrdersByUserConfigViewModel);
+                var providersListQuery = await Mediator.Send(new GetProviderListQuery());
+
+                if (providersListQuery.IsFound)
+                {
+                    ViewBag.Providers = providersListQuery.Providers;
+                }
+
+
+                var orderListQuery = new GetOrdersListByUserConfigQuery()
+                {
+                    Number = getOrdersByUserConfigViewModel.Number,
+                    DateFrom = getOrdersByUserConfigViewModel.DateFrom,
+                    DateTo = getOrdersByUserConfigViewModel.DateTo,
+                    ProviderId = getOrdersByUserConfigViewModel.ProviderId
+                };
+
+                var orderList = await Mediator.Send(orderListQuery);
+
+                if (orderList.IsFound)
+                {
+                    ViewBag.Orders = orderList.Orders;
+
+                    var orderNumbers = orderList.Orders
+                        .GroupBy(o => o.Number)
+                        .Select(x => x.FirstOrDefault())
+                        .Select(s => s.Number)
+                        .ToList();
+
+                    ViewBag.OrderNumbers = orderNumbers;
+                }
+                else
+                {
+                    ViewBag.OrderNumbers = new List<string>() {"Не найдено"};
+                }
+            }
+            return View();
+        }
 
         public async Task<IActionResult> Create()
         {
@@ -70,7 +158,7 @@ namespace OrdersApp.Web.Controllers
 
         [HttpPost]
         //[ProducesResponseType(StatusCodes.Status201Created)]
-        public async Task<IActionResult> Create(CreateOrderDto createOrderVm)
+        public async Task<IActionResult> Create(CreateOrderViewModel createOrderVm)
         {
             if (!ModelState.IsValid)
             {

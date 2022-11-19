@@ -26,6 +26,7 @@ namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Queries.GetOrderLis
             try
             {
                 response.Orders = await _applicationDbContext.Orders
+                    .Include(provider => provider.Provider)
                  .ProjectTo<OrderLookupDto>(_mapper.ConfigurationProvider)
                  .ToListAsync(cancellationToken);
             }
