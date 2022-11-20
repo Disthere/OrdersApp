@@ -1,0 +1,54 @@
+﻿@model OrdersApp.Web.Models.OrderItems.CreateOrderItemViewModel
+
+@{
+    ViewData["Title"] = "Add";
+}
+
+
+
+@if (@Model.OrderId > 0)
+{
+    <h2>Добавить компонент заказа № @Model.OrderId</h2>
+    <form asp-controller="OrderItem" asp-action="Add" Method="post" asp-antiforgery="true">
+        <div class="form-group">
+            <input type="hidden" asp-for="@Model.OrderId" />
+            </div>
+        <br />
+        <div class="col-6">
+            <label asp-for="@Model.Name" class="form-label"></label>
+            <input asp-for="@Model.Name" type="text" class="form-control" id="inputName" aria-describedby="NameHelp">
+            <span asp-validation-for="@Model.Name"></span>
+            <div id="NameHelp" class="form-text">Введите название компонента</div>
+        </div>
+        <br />
+
+        <div class="col-6">
+            <label asp-for="@Model.Quantity" class="form-label"></label>
+            <input asp-for="@Model.Quantity" type="text" class="form-control" id="inputQuantity" aria-describedby="QuantityHelp">
+            <span asp-validation-for="@Model.Quantity"></span>
+            <div id="QuantityHelp" class="form-text">Введите количество компонента</div>
+        </div>
+        <br />
+
+        <div class="col-6">
+            <label asp-for="@Model.Unit" class="form-label"></label>
+            <input asp-for="@Model.Unit" type="text" class="form-control" id="inputUnit" aria-describedby="UnitHelp">
+            <span asp-validation-for="@Model.Unit"></span>
+            <div id="UnitHelp" class="form-text">Введите единицу измерения</div>
+        </div>
+        <br />
+
+        <div class="col-6">
+            <button type="submit" class="btn btn-primary">Создать</button>
+        </div>
+    </form>
+
+    <br />
+    <br />
+}
+else
+{
+    <h3>Нет такого заказа</h3>
+}
+
+

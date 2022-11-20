@@ -27,8 +27,10 @@ namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Queries.GetOrderDet
             try
             {
                 entity = await _applicationDbContext.Orders
-                                .FirstOrDefaultAsync(order =>
-                                order.Id == request.Id, cancellationToken);
+                    .Include(provider => provider.Provider)
+                    .Include(orderItems => orderItems.OrderItems)
+                    .FirstOrDefaultAsync(order =>
+                     order.Id == request.Id, cancellationToken);
             }
             catch { }
 
@@ -36,10 +38,10 @@ namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Queries.GetOrderDet
 
             if (entity != null)
             {
-                response = _mapper.Map<OrderDetailsVm>(entity); 
+                response = _mapper.Map<OrderDetailsVm>(entity);
                 response.IsFound = true;
             }
-           
+
             return response;
         }
     }

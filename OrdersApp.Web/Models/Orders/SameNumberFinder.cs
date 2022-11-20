@@ -4,7 +4,7 @@ using OrdersApp.Web.Infrastructure.AccessToServicesFromOutside;
 
 namespace OrdersApp.Web.Models.Orders
 {
-    public class UniqNumberFinder
+    public class SameNumberFinder
     {
         public bool NumberFound(int providerId, string number)
         {

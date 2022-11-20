@@ -21,7 +21,8 @@ namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.OrderItems.Commands.Create
             {
                 Name = request.Name,
                 Quantity = request.Quantity,
-                Unit = request.Unit
+                Unit = request.Unit,
+                OrderId = request.OrderId
             };
 
             var response = new CreateOrderItemVm();

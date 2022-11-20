@@ -51,7 +51,7 @@ namespace OrdersApp.Web.Models.Orders
         {
             List<ValidationResult> errors = new List<ValidationResult>();
 
-            var finder = new UniqNumberFinder();
+            var finder = new SameNumberFinder();
 
             if (finder.NumberFound(this.ProviderId, this.Number))
             {

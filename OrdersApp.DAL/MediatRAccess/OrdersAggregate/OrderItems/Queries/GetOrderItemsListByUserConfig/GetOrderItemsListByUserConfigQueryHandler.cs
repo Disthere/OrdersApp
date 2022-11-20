@@ -27,9 +27,10 @@ namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.OrderItems.Queries.GetOrde
             try
             {
                 response.OrderItems = await _applicationDbContext.OrderItems
-                .Where(orderItem =>
+                 .Where(orderId => orderId.OrderId == request.OrderId)
+                 .Where(orderItem =>
                    (string.IsNullOrEmpty(request.Name) || orderItem.Name == request.Name)
-                && (string.IsNullOrEmpty(request.Unit) || orderItem.Unit == request.Unit))
+                 && (string.IsNullOrEmpty(request.Unit) || orderItem.Unit == request.Unit))
                  .ProjectTo<OrderItemsListByUserConfigLookupDto>(_mapper.ConfigurationProvider)
                  .ToListAsync(cancellationToken);
             }

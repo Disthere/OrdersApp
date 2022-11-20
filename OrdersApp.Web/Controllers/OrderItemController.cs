@@ -3,15 +3,12 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.DependencyInjection;
-using OrdersApp.DAL.Common.QueryStatuses;
-using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Commands.CreateOrder;
+using OrdersApp.DAL.MediatRAccess.OrdersAggregate.OrderItems.Commands.CreateOrderItem;
 using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Commands.DeleteOrder;
 using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Commands.UpdateOrder;
 using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Queries.GetOrderDetails;
-using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Queries.GetOrderList;
 using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Queries.GetOrdersListByUserConfig;
 using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Providers.Queries.GetProviderList;
-using OrdersApp.Web.Models;
 using OrdersApp.Web.Models.OrderItems;
 using OrdersApp.Web.Models.Orders;
 using System;
@@ -21,14 +18,14 @@ using System.Threading.Tasks;
 
 namespace OrdersApp.Web.Controllers
 {
-    public class OrderController : BaseController
+    public class OrderItemController : BaseController
     {
         private readonly IMapper _mapper;
         private IMediator _mediator;
         private IMediator Mediator =>
             _mediator ??= HttpContext.RequestServices.GetService<IMediator>();
 
-        public OrderController(IMapper mapper) =>
+        public OrderItemController(IMapper mapper) =>
             _mapper = mapper;
 
 
@@ -315,62 +312,45 @@ namespace OrdersApp.Web.Controllers
 
 
         // Get: OrderController/Create
-        public async Task<IActionResult> Create()
+        [HttpGet]
+        public IActionResult Add([FromRoute] int id)
         {
-            var providersListQuery = await Mediator.Send(new GetProviderListQuery());
+            var vm = new CreateOrderItemViewModel();
 
-            if (providersListQuery.IsFound)
+            if (id > 0)
             {
-                ViewBag.Providers = providersListQuery.Providers;
+                vm.OrderId = id;
+                return View(vm);
             }
 
-            return View();
+            return NotFound();
         }
 
 
         // POST: OrderController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(CreateOrderViewModel createOrderVm)
+        public async Task<IActionResult> Add(CreateOrderItemViewModel createOrderItemVm)
         {
-            if (!ModelState.IsValid)
-            {
-                var providers = await Mediator.Send(new GetProviderListQuery());
-
-                ViewBag.Providers = providers.Providers;
-
-                //var providers = await Mediator.Send(new GetProviderListQuery());
-
-                //var vm = new CreateOrderViewModel();
-
-                //if (providers.IsFound)
-                //{
-                //    createOrderVm.Providers = providers.Providers;
-                //}
-
-                //return View(createOrderVm);
-            }
-
             if (ModelState.IsValid)
             {
-                var createOrderComand = new CreateOrderCommand()
+                var createOrderItemCommand = new CreateOrderItemCommand()
                 {
-                    Number = createOrderVm.Number,
-                    Date = createOrderVm.Date,
-                    ProviderId = createOrderVm.ProviderId
+                    OrderId = createOrderItemVm.OrderId,
+                    Name = createOrderItemVm.Name,
+                    Quantity = createOrderItemVm.Quantity,
+                    Unit = createOrderItemVm.Unit
                 };
-
-                //var command = _mapper.Map<CreateOrderCommand>(createOrderVm.CreateOrderDto);
-                //command.Name = ;
-                var operationResult = await Mediator.Send(createOrderComand);
+                                
+                var operationResult = await Mediator.Send(createOrderItemCommand);
 
                 if (operationResult.IsSuccess)
                 {
-                    return RedirectToAction("GetAll", "Order");
+                    return RedirectToAction("Get", "Order", new { id = createOrderItemVm.OrderId });
                 }
             }
 
-            return View();
+            return View(createOrderItemVm);
         }
 
 
