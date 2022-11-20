@@ -1,20 +1,21 @@
-﻿@model OrdersApp.Web.Models.Orders.CreateOrderViewModel
+﻿@model OrdersApp.Web.Models.Orders.UpdateOrderViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Update";
 }
 
-<h2>Добавить заказ</h2>
+<h2>Редактировать заказ</h2>
 
 
 @if (Model is not null)
 {
-    <form asp-controller="Order" asp-action="Create" Method="post" asp-antiforgery="true">
-
+    <form asp-controller="Order" asp-action="Edit" Method="post" asp-antiforgery="true">
+        <input type="hidden" asp-for="@Model.Id" />
         <br />
         <div class="col-6">
             <label asp-for="@Model.Number" class="form-label"></label>
-            <input asp-for="@Model.Number" type="text" class="form-control" id="inputNumber" aria-describedby="NumberHelp">
+            <input asp-for="@Model.Number" type="text" class="form-control" id="inputNumber" aria-describedby="NumberHelp"
+               placeholder=@Model.Number>
             <span asp-validation-for="@Model.Number"></span>
             <div id="NumberHelp" class="form-text">Введите наименование заказа</div>
         </div>
@@ -30,13 +31,14 @@
         <br />
         <div class="col-6">
             <label asp-for="@Model.Date" class="form-label"></label>
-            <input asp-for="@Model.Date" type="date" class="form-control" id="inputDate" aria-describedby="DateHelp" />
+            <input asp-for="@Model.Date" type="date" class="form-control" id="inputDate" aria-describedby="DateHelp"
+               placeholder=@Model.Date />
             <span asp-validation-for="@Model.Date"></span>
             <div id="DateHelp" class="form-text">Выберите дату создания заказа</div>
         </div>
         <br />
         <div class="col-6">
-            <button type="submit" class="btn btn-primary">Создать</button>
+            <button type="submit" class="btn btn-primary">Заменить</button>
         </div>
     </form>
 }
