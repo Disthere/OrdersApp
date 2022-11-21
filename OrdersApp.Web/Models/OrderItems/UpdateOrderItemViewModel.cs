@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using OrdersApp.DAL.Common.Mappings;
 using OrdersApp.DAL.MediatRAccess.OrdersAggregate.OrderItems.Commands.CreateOrderItem;
+using OrdersApp.DAL.MediatRAccess.OrdersAggregate.OrderItems.Commands.UpdateOrderItem;
 using OrdersApp.Web.Models.OrderItems.Options;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -8,9 +9,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OrdersApp.Web.Models.OrderItems
 {
-    public class CreateOrderItemViewModel : IMapWith<CreateOrderItemCommand>, IValidatableObject
+    public class UpdateOrderItemViewModel : IMapWith<UpdateOrderItemCommand>, IValidatableObject
     {
         [Required]
+        public int Id { get; set; }
+
         public int OrderId { get; set; }
 
         [Required(ErrorMessage = "Незаполненное поле")]
@@ -45,6 +48,4 @@ namespace OrdersApp.Web.Models.OrderItems
             return errors;
         }
     }
-
-
 }

@@ -5,5 +5,6 @@ namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.OrderItems.Commands.Update
     public class UpdateOrderItemVm : OperationResult
     {
         public int Id { get; set; }
+        public int OrderId { get; set; }
     }
 }

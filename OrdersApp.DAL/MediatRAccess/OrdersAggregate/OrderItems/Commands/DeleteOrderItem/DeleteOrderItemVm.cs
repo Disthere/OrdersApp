@@ -4,6 +4,7 @@ namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.OrderItems.Commands.Delete
 {
     public class DeleteOrderItemVm : OperationResult
     {
-
+        public int Id { get; set; }
+        public int OrderId { get; set; }
     }
 }

@@ -38,6 +38,9 @@ namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.OrderItems.Commands.Delete
                     _applicationDbContext.OrderItems.Remove(entity);
                     await _applicationDbContext.SaveChangesAsync(cancellationToken);
                     response.IsSuccess = true;
+
+                    response.Id = entity.Id;
+                    response.OrderId = entity.OrderId;
                 }
                 catch { response.IsError = true; }
             }

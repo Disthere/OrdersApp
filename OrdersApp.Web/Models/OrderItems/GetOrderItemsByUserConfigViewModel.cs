@@ -8,9 +8,11 @@ namespace OrdersApp.Web.Models.OrderItems
 {
     public class GetOrderItemsByUserConfigViewModel : IMapWith<GetOrderItemsListByUserConfigQuery>
     {
+        public int OrderId { get; set; }
         public string Name { get; set; }
         public string Unit { get; set; }
 
+       
         public void Mapping(Profile profile)
         {
             profile.CreateMap<GetOrderItemsByUserConfigViewModel, GetOrderItemsListByUserConfigQuery>();

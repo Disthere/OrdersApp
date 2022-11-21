@@ -1,8 +1,7 @@
 ﻿using AutoMapper;
-using AutoMapper.Configuration.Annotations;
 using OrdersApp.DAL.Common.Mappings;
-using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Commands.CreateOrder;
 using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Commands.UpdateOrder;
+using OrdersApp.Web.Models.Orders.Options;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -31,19 +30,6 @@ namespace OrdersApp.Web.Models.Orders
         public void Mapping(Profile profile)
         {
             profile.CreateMap<UpdateOrderViewModel, UpdateOrderCommand>();
-                //.IgnoreAllPropertiesWithAnInaccessibleSetter()
-                //.IgnoreAllSourcePropertiesWithAnInaccessibleSetter()
-    //.IgnoreAllUnmapped();
-                
-                //.ForMember(orderVm => orderVm.Id,
-                //opt => opt.MapFrom(order => order.Id))
-                //.ForMember(orderVm => orderVm.Number,
-                //opt => opt.MapFrom(order => order.Number))
-                //.ForMember(orderVm => orderVm.Date,
-                //opt => opt.MapFrom(order => order.Date))
-                //.ForMember(orderVm => orderVm.ProviderId,
-                //opt => opt.MapFrom(order => order.ProviderId))
-                //.ForAllMembers(opts => opts.Ignore());
         }
 
         

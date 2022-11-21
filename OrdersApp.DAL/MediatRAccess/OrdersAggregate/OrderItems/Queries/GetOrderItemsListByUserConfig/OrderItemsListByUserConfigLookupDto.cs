@@ -11,9 +11,11 @@ namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.OrderItems.Queries.GetOrde
         public decimal Quantity { get; set; }
         public string Unit { get; set; }
 
+
         public void Mapping(Profile profile)
         {
             profile.CreateMap<OrderItem, OrderItemsListByUserConfigLookupDto>();
+           
         }
     }
 }

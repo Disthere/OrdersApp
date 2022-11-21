@@ -1,17 +1,17 @@
 ﻿using MediatR;
 using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Queries.GetOrdersListByUserConfig;
 using OrdersApp.Web.Infrastructure.AccessToServicesFromOutside;
+using System.Linq;
 
-namespace OrdersApp.Web.Models.Orders
+namespace OrdersApp.Web.Models.OrderItems.Options
 {
-    public class SameNumberFinder
+    public class SameNameFinder
     {
-        public bool NumberFound(int providerId, string number)
+        public bool NameFound(int orderId, string name)
         {
             var numberQuery = new GetOrdersListByUserConfigQuery()
             {
-                Number = number,
-                ProviderId = providerId
+                Number = name
             };
 
             var mediator = ServiceLocator.ServiceProvider.GetService<IMediator>();
@@ -19,7 +19,14 @@ namespace OrdersApp.Web.Models.Orders
             var responce = mediator.Send(numberQuery).Result;
 
             if (responce.IsFound)
-                return true;
+            {
+                var order = responce.Orders
+                    .Where(order => order.Id == orderId)
+                    .FirstOrDefault();
+
+                if (order != null)
+                    return true;
+            }
 
             return false;
         }

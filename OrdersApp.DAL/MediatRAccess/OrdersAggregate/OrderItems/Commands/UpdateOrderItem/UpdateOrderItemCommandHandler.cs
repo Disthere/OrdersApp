@@ -42,6 +42,8 @@ namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.OrderItems.Commands.Update
                     _applicationDbContext.OrderItems.Update(entity);
                     await _applicationDbContext.SaveChangesAsync(cancellationToken);
                     response.IsSuccess = true;
+                    response.Id = entity.Id;
+                    response.OrderId = entity.OrderId;
                 }
                 catch { response.IsError = true; }
             }

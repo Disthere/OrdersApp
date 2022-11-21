@@ -11,6 +11,7 @@ namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.OrderItems.Queries.GetOrde
         public string Name { get; set; }
         public decimal Quantity { get; set; }
         public string Unit { get; set; }
+        public int OrderId { get; set; }
 
         public void Mapping(Profile profile)
         {
@@ -22,7 +23,9 @@ namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.OrderItems.Queries.GetOrde
                 .ForMember(orderItemVm => orderItemVm.Quantity,
                 opt => opt.MapFrom(orderItem => orderItem.Quantity))
                 .ForMember(orderItemVm => orderItemVm.Unit,
-                opt => opt.MapFrom(orderItem => orderItem.Unit));
+                opt => opt.MapFrom(orderItem => orderItem.Unit))
+                .ForMember(orderItemVm => orderItemVm.OrderId,
+                opt => opt.MapFrom(orderItem => orderItem.OrderId));
         }
     }
 }
