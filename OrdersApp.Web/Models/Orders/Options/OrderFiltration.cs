@@ -1,7 +1,4 @@
-﻿using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Queries.GetOrderDetails;
-using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Queries.GetOrderList;
-using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Queries.GetOrdersListByUserConfig;
-using OrdersApp.Domain.Entities.OrdersAggregate;
+﻿using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Queries.GetOrdersListByUserConfig;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -14,7 +11,6 @@ namespace OrdersApp.Web.Models.Orders.Options
         public OrderFiltration(IList<OrdersListByUserConfigLookupDto> orders) =>
              _orders = orders;
 
-
         public List<string> GetOrderNumbers()
         {
             var orderNumbers = _orders
@@ -26,10 +22,7 @@ namespace OrdersApp.Web.Models.Orders.Options
             if (orderNumbers.Any())
                 return orderNumbers;
             else
-            {
                 return new List<string>() { "Не найдено" };
-            }
         }
-
     }
 }

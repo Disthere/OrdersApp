@@ -1,8 +1,5 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using OrdersApp.DAL.Common.Exceptions;
-using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Commands.DeleteOrder;
-using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Providers.Commands.UpdateProvider;
 using OrdersApp.DAL.Persistence;
 using OrdersApp.Domain.Entities.OrdersAggregate;
 using System.Threading;

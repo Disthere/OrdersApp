@@ -15,7 +15,6 @@ namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.OrderItems.Queries.GetOrde
         public void Mapping(Profile profile)
         {
             profile.CreateMap<OrderItem, OrderItemsListByUserConfigLookupDto>();
-           
         }
     }
 }

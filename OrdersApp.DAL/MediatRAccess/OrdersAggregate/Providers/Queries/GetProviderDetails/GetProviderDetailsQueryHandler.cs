@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using OrdersApp.DAL.Common.Exceptions;
-using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Queries.GetOrderDetails;
 using OrdersApp.DAL.Persistence;
 using OrdersApp.Domain.Entities.OrdersAggregate;
 using System.Threading;

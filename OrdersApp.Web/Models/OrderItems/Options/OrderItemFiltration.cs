@@ -7,11 +7,10 @@ namespace OrdersApp.Web.Models.OrderItems.Options
 {
     public class OrderItemFiltration
     {
-        private readonly  List<OrderItem> _orderItems;
+        private readonly List<OrderItem> _orderItems;
 
         public OrderItemFiltration(List<OrderItem> orderItems) =>
              _orderItems = orderItems;
-        
 
         public List<string> GetOrderItemNames()
         {
@@ -24,9 +23,8 @@ namespace OrdersApp.Web.Models.OrderItems.Options
             if (orderItemNames.Any())
                 return orderItemNames;
             else
-            {
                 return new List<string>() { "Не найдено" };
-            }
+
         }
 
         public List<string> GetOrderItemUnits()
@@ -40,9 +38,8 @@ namespace OrdersApp.Web.Models.OrderItems.Options
             if (orderItemUnits.Any())
                 return orderItemUnits;
             else
-            {
                 return new List<string>() { "Не найдено" };
-            }
+
         }
 
     }

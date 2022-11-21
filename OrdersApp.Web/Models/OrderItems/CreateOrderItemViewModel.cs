@@ -18,6 +18,8 @@ namespace OrdersApp.Web.Models.OrderItems
         public string Name { get; set; }
 
         [Required]
+        [Range(typeof(decimal), "0", "999999999999", ErrorMessage = "Недопустимый диапазон")]
+        [RegularExpression(@"^(\d+).(\d{3})$", ErrorMessage = "Допустимый диапазон - 0,00 - 9999999999,99")]
         [DataType(DataType.Currency, ErrorMessage = "Неверный числовой формат")]
         [Display(Name = "Количество")]
         public decimal Quantity { get; set; }
@@ -45,6 +47,4 @@ namespace OrdersApp.Web.Models.OrderItems
             return errors;
         }
     }
-
-
 }

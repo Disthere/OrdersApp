@@ -17,7 +17,6 @@ using OrdersApp.Web.Models.Orders;
 using OrdersApp.Web.Models.Orders.Options;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace OrdersApp.Web.Controllers
@@ -122,7 +121,6 @@ namespace OrdersApp.Web.Controllers
 
                     ViewBag.OrderItemNames = filtration.GetOrderItemNames();
                     ViewBag.OrderItemUnits = filtration.GetOrderItemUnits();
-
                 }
 
                 return View(vm);

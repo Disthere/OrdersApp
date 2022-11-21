@@ -7,7 +7,6 @@ namespace OrdersApp.Domain.Entities.OrdersAggregate
     {
         public string Number { get; set; }
         public DateTime Date { get; set; } = DateTime.Now;
-
         public int ProviderId { get; set; }
 
         public Provider Provider { get; set; }

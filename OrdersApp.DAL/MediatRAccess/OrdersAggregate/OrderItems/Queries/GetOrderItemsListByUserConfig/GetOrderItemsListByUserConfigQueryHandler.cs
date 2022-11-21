@@ -2,7 +2,6 @@
 using AutoMapper.QueryableExtensions;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using OrdersApp.DAL.MediatRAccess.OrdersAggregate.Orders.Queries.GetOrdersListByUserConfig;
 using OrdersApp.DAL.Persistence;
 using System.Linq;
 using System.Threading;

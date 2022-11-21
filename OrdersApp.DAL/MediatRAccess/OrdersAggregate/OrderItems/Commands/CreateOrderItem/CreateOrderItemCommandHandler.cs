@@ -40,4 +40,4 @@ namespace OrdersApp.DAL.MediatRAccess.OrdersAggregate.OrderItems.Commands.Create
             return response;
         }
     }
-    }
+}
