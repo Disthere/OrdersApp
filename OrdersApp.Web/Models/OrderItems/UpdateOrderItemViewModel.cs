@@ -22,7 +22,7 @@ namespace OrdersApp.Web.Models.OrderItems
 
         [Required]
         [Range(typeof(decimal), "0", "999999999999", ErrorMessage = "Недопустимый диапазон")]
-        [RegularExpression(@"^(\d+).(\d{3})$", ErrorMessage = "Допустимый диапазон - 0,00 - 9999999999,99")]
+        [RegularExpression(@"^(\d+).(\d{3})$", ErrorMessage = "Допустимый диапазон - 0,000 - 9999999999,999")]
         [DataType(DataType.Currency, ErrorMessage = "Неверный числовой формат")]
         [Display(Name = "Количество")]
         public decimal Quantity { get; set; }
