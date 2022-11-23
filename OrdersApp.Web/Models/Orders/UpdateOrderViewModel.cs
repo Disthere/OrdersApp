@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace OrdersApp.Web.Models.Orders
 {
-    public class UpdateOrderViewModel : IMapWith<UpdateOrderCommand>
+    public class UpdateOrderViewModel : IMapWith<UpdateOrderCommand>, IValidatableObject
     {
         [Required]
         public int Id { get; set; }
@@ -31,8 +31,7 @@ namespace OrdersApp.Web.Models.Orders
         {
             profile.CreateMap<UpdateOrderViewModel, UpdateOrderCommand>();
         }
-
-        
+                
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
             List<ValidationResult> errors = new List<ValidationResult>();

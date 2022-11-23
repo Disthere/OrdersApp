@@ -4,8 +4,11 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OrdersApp.DAL;
+using OrdersApp.DAL.Common.Mappings;
+using OrdersApp.DAL.Persistence;
 using OrdersApp.Web.Infrastructure.AccessToServicesFromOutside;
 using System;
+using System.Reflection;
 
 namespace OrdersApp.Web
 {
@@ -34,7 +37,11 @@ namespace OrdersApp.Web
 
             services.AddMediatR();
 
-            services.AddAutoMapper();
+            services.AddAutoMapper(config =>
+            {
+                config.AddProfile(new AssemblyMappingProfile(Assembly.GetExecutingAssembly()));
+                config.AddProfile(new AssemblyMappingProfile(typeof(ApplicationDbContext).Assembly));
+            });
 
             services.AddAntiforgery();
 

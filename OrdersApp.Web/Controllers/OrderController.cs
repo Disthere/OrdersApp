@@ -66,31 +66,21 @@ namespace OrdersApp.Web.Controllers
         // Post: OrderController/GetAll
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> GetAll(GetOrdersByUserConfigViewModel getOrdersByUserConfigViewModel)
+        public async Task<ActionResult> GetAll(GetOrdersByUserConfigViewModel getOrdersByUserConfigVm)
         {
             if (ModelState.IsValid)
             {
                 var providersListQuery = await Mediator.Send(new GetProviderListQuery());
 
                 if (providersListQuery.IsFound)
-                {
                     ViewBag.Providers = providersListQuery.Providers;
-                }
 
-                var orderListQuery = new GetOrdersListByUserConfigQuery()
-                {
-                    Number = getOrdersByUserConfigViewModel.Number,
-                    DateFrom = getOrdersByUserConfigViewModel.DateFrom,
-                    DateTo = getOrdersByUserConfigViewModel.DateTo,
-                    ProviderId = getOrdersByUserConfigViewModel.ProviderId
-                };
+                var orderListQuery = _mapper.Map<GetOrdersListByUserConfigQuery>(getOrdersByUserConfigVm);
 
                 var orderList = await Mediator.Send(orderListQuery);
 
                 if (orderList.IsFound)
-                {
                     ViewBag.Orders = orderList.Orders;
-                }
 
                 var filtration = new OrderFiltration(orderList.Orders);
 
@@ -140,16 +130,9 @@ namespace OrdersApp.Web.Controllers
                 var currentOrder = await Mediator.Send(new GetOrderDetailsQuery() { Id = getOrderItemsByUserConfigVm.OrderId });
 
                 if (currentOrder.IsFound)
-                {
                     ViewBag.Order = currentOrder;
-                }
 
-                var orderItemsListQuery = new GetOrderItemsListByUserConfigQuery()
-                {
-                    OrderId = getOrderItemsByUserConfigVm.OrderId,
-                    Name = getOrderItemsByUserConfigVm.Name,
-                    Unit = getOrderItemsByUserConfigVm.Unit
-                };
+                var orderItemsListQuery = _mapper.Map<GetOrderItemsListByUserConfigQuery>(getOrderItemsByUserConfigVm);
 
                 var orderItemList = await Mediator.Send(orderItemsListQuery);
 
@@ -158,6 +141,7 @@ namespace OrdersApp.Web.Controllers
                     ViewBag.OrderItems = orderItemList.OrderItems;
 
                     List<OrderItem> orderItems = new List<OrderItem>();
+
                     foreach (var item in orderItemList.OrderItems)
                     {
                         orderItems.Add(new OrderItem()
@@ -208,19 +192,19 @@ namespace OrdersApp.Web.Controllers
 
             if (ModelState.IsValid)
             {
-                var createOrderComand = new CreateOrderCommand()
+                //_mapper.Map<CreateOrderCommand>(createOrderVm);
+                var createOrderCommand =
+                new CreateOrderCommand()
                 {
                     Number = createOrderVm.Number,
                     Date = createOrderVm.Date,
                     ProviderId = createOrderVm.ProviderId
                 };
 
-                var operationResult = await Mediator.Send(createOrderComand);
+                var operationResult = await Mediator.Send(createOrderCommand);
 
                 if (operationResult.IsSuccess)
-                {
                     return RedirectToAction("GetAll", "Order");
-                }
             }
 
             return View();
@@ -260,29 +244,24 @@ namespace OrdersApp.Web.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(UpdateOrderViewModel updateOrderVm)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
                 var providers = await Mediator.Send(new GetProviderListQuery());
 
                 ViewBag.Providers = providers.Providers;
+            }
 
-                var updateOrderCommand = new UpdateOrderCommand()
-                {
-                    Id = updateOrderVm.Id,
-                    Number = updateOrderVm.Number,
-                    Date = updateOrderVm.Date,
-                    ProviderId = updateOrderVm.ProviderId
-                };
-
+            if (ModelState.IsValid)
+            {
+                var updateOrderCommand = _mapper.Map<UpdateOrderCommand>(updateOrderVm);
+                
                 var operationResult = await Mediator.Send(updateOrderCommand);
 
                 if (operationResult.IsSuccess)
-                {
                     return RedirectToAction("GetAll", "Order");
-                }
             }
 
-            return View();
+            return View(updateOrderVm);
         }
 
 

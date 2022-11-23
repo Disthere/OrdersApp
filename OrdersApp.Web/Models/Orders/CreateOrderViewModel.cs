@@ -27,13 +27,13 @@ namespace OrdersApp.Web.Models.Orders
 
         public void Mapping(Profile profile)
         {
-            profile.CreateMap<CreateOrderCommand, CreateOrderViewModel>()
-                .ForMember(orderVm => orderVm.Number,
-                opt => opt.MapFrom(order => order.Number))
-                .ForMember(orderVm => orderVm.Date,
-                opt => opt.MapFrom(order => order.Date))
-                .ForMember(orderVm => orderVm.ProviderId,
-                opt => opt.MapFrom(order => order.ProviderId)); ;
+            profile.CreateMap<CreateOrderCommand, CreateOrderViewModel>();
+                //.ForMember(orderVm => orderVm.Number,
+                //opt => opt.MapFrom(order => order.Number))
+                //.ForMember(orderVm => orderVm.Date,
+                //opt => opt.MapFrom(order => order.Date))
+                //.ForMember(orderVm => orderVm.ProviderId,
+                //opt => opt.MapFrom(order => order.ProviderId));
         }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
@@ -50,6 +50,4 @@ namespace OrdersApp.Web.Models.Orders
             return errors;
         }
     }
-
-
 }
